@@ -1,8 +1,10 @@
+```groovy
 pipeline {
     agent any
 
     environment {
         PATH = "/opt/maven/bin:${env.PATH}"
+        SCANNER_HOME = tool 'sonar-card'
     }
 
     stages {
@@ -12,15 +14,15 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-        stage('SonarQube analysis') {
-            enviroment {
-                scannerHome = tool 'sonar-card'
-            }
+
+        stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar-card-1') {
-                    sh "${scannerHome}/bin/sonar-scanner"
+                    sh "${SCANNER_HOME}/bin/sonar-scanner"
                 }
             }
         }
     }
 }
+```
+
